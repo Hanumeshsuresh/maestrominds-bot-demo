@@ -1,0 +1,39 @@
+/* Ensure the container fits the screen and doesn't overflow */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* Full viewport height */
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Chat bubbles that adjust to width */
+.message {
+    max-width: 85%;
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 15px;
+    word-wrap: break-word;
+    /* Prevents text from breaking layout */
+}
+
+/* Input area remains at bottom */
+.input-area {
+    margin-top: auto;
+    display: flex;
+    gap: 8px;
+    padding-bottom: env(safe-area-inset-bottom);
+    /* iOS support */
+}
+
+@media (max-width: 600px) {
+    .message {
+        font-size: 16px;
+    }
+
+    /* Easier to read on phones */
+}

@@ -1,0 +1,12 @@
+# Ignore strictly local/secret files
+.env
+.git
+.gitignore
+node_modules/
+npm-debug.log
+Dockerfile
+.dockerignore
+
+# Ignore specific files
+office_visitors.xlsx
+cloud-run-deployment-guide.md
