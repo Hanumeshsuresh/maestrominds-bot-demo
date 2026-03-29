@@ -707,20 +707,31 @@
     // Add current message
     geminiContents.push({ role: "user", parts: [{ text: userText }] });
 
-    // Base system instructions for the Maestrominds persona
-    const systemPrompt = "You are the primary AI Assistant for MaestroMinds. MaestroMinds is an innovative tech company offering services like IT consulting, web development, project management, 3D design, GST services, and tech support. Be extremely concise, highly professional, and welcoming. Use bullet points occasionally. Keep responses under 4 sentences unless specifically asked to elaborate.";
+    // Base system instructions for the Maestrominds persona with verified context
+    const systemPrompt = `You are MAESTROMINDS AI — a brilliant, warm, and deeply knowledgeable AI assistant. Act exactly like a real-time human colleague, not a robotic script.
+
+CRITICAL RULES:
+- Answer questions using ONLY the MAESTROMINDS details below.
+- Keep responses concise, professional, and friendly.
+
+MAESTROMINDS KNOWLEDGE BASE:
+OFFICE HOURS: Monday to Friday: 9:00 AM - 5:00 PM, Saturday: 10:00 AM - 2:00 PM, Sunday: CLOSED
+LOCATION: 123 Innovation Tower, Tech District, Suite 400
+SERVICES: IT Consulting, Digital Transformation, Cloud Solutions, Cybersecurity, Enterprise IT Support
+CONTACT: info@maestrominds.com | (555) 123-4567 | WhatsApp: +1 (555) 123-4567
+STUDENT UNION STARTUP PLATFORM: A unified digital ecosystem connecting students, alumni, startups, universities, faculty, and mentors to bridge the gap between academic learning and industry exposure.`;
     
     // Inject system prompt directly into the first message for Gemini format
     const payload = {
       contents: [
         { role: "user", parts: [{ text: "SYSTEM INSTRUCTION (Adopt this persona strictly): " + systemPrompt }] },
-        { role: "model", parts: [{ text: "Understood. I am the MaestroMinds AI Assistant. I will be concise and professional." }] },
+        { role: "model", parts: [{ text: "Understood. I am the MaestroMinds AI Assistant. I will communicate naturally and professionally using only this firm's verified context." }] },
         ...geminiContents
       ]
     };
 
     try {
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
