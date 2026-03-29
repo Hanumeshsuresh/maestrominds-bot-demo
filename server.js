@@ -41,8 +41,9 @@ app.use(cors({
 // Parse JSON request bodies
 app.use(express.json({ limit: '10kb' }));
 
-// Serve static files (the office-assistant.html and any other assets)
+// Serve static files from root and /public folder
 app.use(express.static(path.join(__dirname)));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // ─── Routes ──────────────────────────────────────────────
 
@@ -52,6 +53,14 @@ app.use(express.static(path.join(__dirname)));
  */
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'office-assistant.html'));
+});
+
+/**
+ * GET /bot
+ * Serve the Maestrominds-branded embed bot (iframe-ready standalone UI).
+ */
+app.get('/bot', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'maestro-bot.html'));
 });
 
 /**
@@ -131,7 +140,7 @@ app.post('/api/chat', async (req, res) => {
             }
         }
 
-        const apiKey = process.env.ANTHROPIC_API_KEY || "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";
+        const apiKey = process.env.ANTHROPIC_API_KEY;
         const reply = await getAIResponse(finalMessages, apiKey, resolvedSessionId);
 
         return res.status(200).json({ success: true, reply, sessionId: resolvedSessionId });
@@ -249,12 +258,14 @@ app.use((err, req, res, next) => {
 // ─── Start Server ─────────────────────────────────────────
 app.listen(PORT, '0.0.0.0', () => {
     console.log('\n╔══════════════════════════════════════════╗');
-    console.log(`Bot running on http://localhost:${PORT}`);
+    console.log(`║  Bot running on http://localhost:${PORT}     ║`);
+    console.log('╚══════════════════════════════════════════╝');
     console.log('\nEndpoints:');
     console.log(`  POST http://localhost:${PORT}/api/save-visitor`);
     console.log(`  POST http://localhost:${PORT}/api/chat`);
     console.log(`  GET  http://localhost:${PORT}/api/visitors`);
     console.log(`  GET  http://localhost:${PORT}/api/health`);
+    console.log(`\n🤖 Embed Bot UI → http://localhost:${PORT}/bot`);
     console.log('\n⚡ Open http://localhost:3000 in your browser\n');
 });
 
