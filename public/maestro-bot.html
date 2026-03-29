@@ -737,7 +737,11 @@ STUDENT UNION STARTUP PLATFORM: A unified digital ecosystem connecting students,
         body: JSON.stringify(payload)
       });
 
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`HTTP ${res.status} - ${errorText.substring(0, 200)}`);
+      }
+      
       const data = await res.json();
       hideTyping();
 
@@ -757,7 +761,8 @@ STUDENT UNION STARTUP PLATFORM: A unified digital ecosystem connecting students,
     } catch (err) {
       hideTyping();
       console.error('[bot]', err);
-      addMsg('bot', '⚡ Connection hiccup — please try again in a moment.');
+      // Print the exact error so we can debug exactly why Google API is rejecting the request!
+      addMsg('bot', `⚡ **API Default Error:** ${err.message}`);
     }
 
     sendBtn.disabled = false;
