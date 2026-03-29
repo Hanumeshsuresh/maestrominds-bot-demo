@@ -56,6 +56,14 @@ app.get('/', (req, res) => {
 });
 
 /**
+ * GET /demo
+ * Serve the 1:1 replica of Maestrominds website with the bot injected.
+ */
+app.get('/demo', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'maestrominds-replica.html'));
+});
+
+/**
  * GET /bot
  * Serve the Maestrominds-branded embed bot (iframe-ready standalone UI).
  */
