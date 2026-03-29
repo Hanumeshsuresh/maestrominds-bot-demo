@@ -887,8 +887,17 @@ document.tidioChatCode = "9xyrg1ui4gpgwddhhq1cjdqbgnkrvert";
     launcher.style.display = "flex";
     launcher.style.alignItems = "center";
     launcher.style.justifyContent = "center";
+    launcher.style.overflow = "hidden"; // ensure 3D canvas stays inside circle
     launcher.style.transition = "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)";
-    launcher.innerHTML = `<span style="font-size: 32px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">🤖</span>`;
+    
+    // Inject the model-viewer script so the 3D robot renders properly
+    var mvScript = document.createElement("script");
+    mvScript.type = "module";
+    mvScript.src = "https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js";
+    document.head.appendChild(mvScript);
+
+    // Use the 3D .glb model instead of the emoji emoji
+    launcher.innerHTML = `<model-viewer src="assets/robot.glb" auto-rotate camera-controls interaction-prompt="none" style="width: 100%; height: 100%; object-fit: contain; pointer-events: none;"></model-viewer>`;
     
     // Hover effect
     launcher.addEventListener('mouseenter', () => { if(launcher.style.opacity === "1" || !launcher.style.opacity) launcher.style.transform = "scale(1.1) translateY(-4px)"; });
