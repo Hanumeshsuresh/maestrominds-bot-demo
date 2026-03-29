@@ -872,6 +872,30 @@ document.tidioChatCode = "9xyrg1ui4gpgwddhhq1cjdqbgnkrvert";
 <!-- MaestroMinds AI Bot -->
 <script>
   (function() {
+    // 1. Create the Bot Launcher (Robot Logo)
+    var launcher = document.createElement("div");
+    launcher.style.position = "fixed";
+    launcher.style.bottom = "25px";
+    launcher.style.right = "25px";
+    launcher.style.width = "65px";
+    launcher.style.height = "65px";
+    launcher.style.background = "linear-gradient(135deg, #1A1A1A, #2D2D2D)";
+    launcher.style.borderRadius = "50%";
+    launcher.style.boxShadow = "0 8px 24px rgba(255,107,53, 0.4)";
+    launcher.style.zIndex = "999999";
+    launcher.style.cursor = "pointer";
+    launcher.style.display = "flex";
+    launcher.style.alignItems = "center";
+    launcher.style.justifyContent = "center";
+    launcher.style.transition = "transform 0.3s cubic-bezier(.34,1.56,.64,1)";
+    // Using a friendly robot emoji or SVG as the logo
+    launcher.innerHTML = `<span style="font-size: 32px; filter: drop-shadow(0 0 8px rgba(255,107,53,0.5));">🤖</span>`;
+    
+    // Hover effect
+    launcher.addEventListener('mouseenter', () => launcher.style.transform = "scale(1.1) translateY(-4px)");
+    launcher.addEventListener('mouseleave', () => launcher.style.transform = "scale(1)");
+
+    // 2. Create the Bot Iframe (Hidden by default)
     var iframe = document.createElement("iframe");
     iframe.src = "maestro-bot.html"; 
     
@@ -884,6 +908,7 @@ document.tidioChatCode = "9xyrg1ui4gpgwddhhq1cjdqbgnkrvert";
     iframe.style.borderRadius = "16px";
     iframe.style.boxShadow = "0 10px 40px rgba(0, 0, 0, 0.2)";
     iframe.style.zIndex = "999999";
+    iframe.style.display = "none"; // Hidden initially
     
     if(window.innerWidth < 480) {
       iframe.style.width = "100%";
@@ -893,11 +918,20 @@ document.tidioChatCode = "9xyrg1ui4gpgwddhhq1cjdqbgnkrvert";
       iframe.style.borderRadius = "0";
     }
 
+    document.body.appendChild(launcher);
     document.body.appendChild(iframe);
 
+    // 3. Click Launcher -> Show Bot
+    launcher.addEventListener("click", function() {
+      launcher.style.display = "none";
+      iframe.style.display = "block";
+    });
+
+    // 4. Listen for Minimize -> Hide Bot, Show Launcher
     window.addEventListener("message", function(event) {
       if (event.data === 'minimize-bot') {
         iframe.style.display = "none";
+        launcher.style.display = "flex";
       }
     });
   })();
