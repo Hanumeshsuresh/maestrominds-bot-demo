@@ -735,7 +735,7 @@ STUDENT UNION STARTUP PLATFORM: A unified digital ecosystem connecting students,
     };
 
     try {
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -743,7 +743,11 @@ STUDENT UNION STARTUP PLATFORM: A unified digital ecosystem connecting students,
 
       if (!res.ok) {
         const errorText = await res.text();
-        throw new Error(`HTTP ${res.status} - ${errorText.substring(0, 200)}`);
+        // Specifically look for the 429 quota error limit 0 to warn the user
+        if (errorText.includes("limit: 0")) {
+          throw new Error('Google completely blocked this key from using the free tier (Quota Limit: 0). You must add billing to your Google Cloud account or create a new key from Google AI Studio directly.');
+        }
+        throw new Error(`HTTP ${res.status} - ${errorText.substring(0, 150)}...`);
       }
       
       const data = await res.json();
