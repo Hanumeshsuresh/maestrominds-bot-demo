@@ -869,7 +869,7 @@ document.tidioChatCode = "9xyrg1ui4gpgwddhhq1cjdqbgnkrvert";
 })();
 </script>	</body>
 </html>
-<!-- MaestroMinds AI Bot -->
+<!-- MaestroMinds AI Bot Cinematic UI -->
 <script>
   (function() {
     // 1. Create the Bot Launcher (Robot Logo)
@@ -879,36 +879,41 @@ document.tidioChatCode = "9xyrg1ui4gpgwddhhq1cjdqbgnkrvert";
     launcher.style.right = "25px";
     launcher.style.width = "65px";
     launcher.style.height = "65px";
-    launcher.style.background = "linear-gradient(135deg, #1A1A1A, #2D2D2D)";
+    launcher.style.background = "linear-gradient(135deg, #FF6B35, #E55A24)";
     launcher.style.borderRadius = "50%";
-    launcher.style.boxShadow = "0 8px 24px rgba(255,107,53, 0.4)";
+    launcher.style.boxShadow = "0 8px 32px rgba(255,107,53, 0.5)";
     launcher.style.zIndex = "999999";
     launcher.style.cursor = "pointer";
     launcher.style.display = "flex";
     launcher.style.alignItems = "center";
     launcher.style.justifyContent = "center";
-    launcher.style.transition = "transform 0.3s cubic-bezier(.34,1.56,.64,1)";
-    // Using a friendly robot emoji or SVG as the logo
-    launcher.innerHTML = `<span style="font-size: 32px; filter: drop-shadow(0 0 8px rgba(255,107,53,0.5));">🤖</span>`;
+    launcher.style.transition = "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)";
+    launcher.innerHTML = `<span style="font-size: 32px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">🤖</span>`;
     
     // Hover effect
-    launcher.addEventListener('mouseenter', () => launcher.style.transform = "scale(1.1) translateY(-4px)");
-    launcher.addEventListener('mouseleave', () => launcher.style.transform = "scale(1)");
+    launcher.addEventListener('mouseenter', () => { if(launcher.style.opacity === "1" || !launcher.style.opacity) launcher.style.transform = "scale(1.1) translateY(-4px)"; });
+    launcher.addEventListener('mouseleave', () => { if(launcher.style.opacity === "1" || !launcher.style.opacity) launcher.style.transform = "scale(1)"; });
 
-    // 2. Create the Bot Iframe (Hidden by default)
+    // 2. Create the Bot Iframe with Morph CSS
     var iframe = document.createElement("iframe");
     iframe.src = "maestro-bot.html"; 
     
     iframe.style.position = "fixed";
-    iframe.style.bottom = "20px";
-    iframe.style.right = "20px";
+    iframe.style.bottom = "25px";
+    iframe.style.right = "25px";
     iframe.style.width = "380px";
-    iframe.style.height = "600px";
+    iframe.style.height = "620px";
     iframe.style.border = "none";
-    iframe.style.borderRadius = "16px";
-    iframe.style.boxShadow = "0 10px 40px rgba(0, 0, 0, 0.2)";
-    iframe.style.zIndex = "999999";
-    iframe.style.display = "none"; // Hidden initially
+    iframe.style.borderRadius = "20px";
+    iframe.style.boxShadow = "0 20px 60px rgba(0,0,0,0.3), 0 0 40px rgba(255,107,53,0.15)";
+    iframe.style.zIndex = "999998";
+    
+    // Cinematic Hidden State
+    iframe.style.opacity = "0";
+    iframe.style.transform = "scale(0.8) translateY(40px)";
+    iframe.style.transformOrigin = "bottom right";
+    iframe.style.pointerEvents = "none";
+    iframe.style.transition = "all 0.55s cubic-bezier(0.16, 1, 0.3, 1)";
     
     if(window.innerWidth < 480) {
       iframe.style.width = "100%";
@@ -916,22 +921,37 @@ document.tidioChatCode = "9xyrg1ui4gpgwddhhq1cjdqbgnkrvert";
       iframe.style.bottom = "0";
       iframe.style.right = "0";
       iframe.style.borderRadius = "0";
+      iframe.style.transformOrigin = "bottom center";
     }
 
     document.body.appendChild(launcher);
     document.body.appendChild(iframe);
 
-    // 3. Click Launcher -> Show Bot
+    // 3. Cinematic Opening Morph
     launcher.addEventListener("click", function() {
-      launcher.style.display = "none";
-      iframe.style.display = "block";
+      // Hide Launcher
+      launcher.style.opacity = "0";
+      launcher.style.transform = "scale(0.5) rotate(-45deg)";
+      launcher.style.pointerEvents = "none";
+      
+      // Show Iframe
+      iframe.style.opacity = "1";
+      iframe.style.transform = "scale(1) translateY(0)";
+      iframe.style.pointerEvents = "auto";
     });
 
-    // 4. Listen for Minimize -> Hide Bot, Show Launcher
+    // 4. Cinematic Closing Morph
     window.addEventListener("message", function(event) {
       if (event.data === 'minimize-bot') {
-        iframe.style.display = "none";
-        launcher.style.display = "flex";
+        // Hide Iframe
+        iframe.style.opacity = "0";
+        iframe.style.transform = "scale(0.8) translateY(40px)";
+        iframe.style.pointerEvents = "none";
+        
+        // Show Launcher
+        launcher.style.opacity = "1";
+        launcher.style.transform = "scale(1) rotate(0deg)";
+        launcher.style.pointerEvents = "auto";
       }
     });
   })();
